@@ -13,6 +13,7 @@ func TestLog(t *testing.T) {
 			"error":   colorine.Error,
 		},
 		colorine.Info,
+		"%10s",
 	)
 
 	logger.Log("verbose", "shows this color")
@@ -34,6 +35,7 @@ func ExampleLogger() {
 		},
 		// The default prefix color
 		colorine.TextStyle{colorine.Green, colorine.None},
+		"%10s",
 	)
 
 	logger.Log("create", "path/to/file")
