@@ -20,6 +20,9 @@ logger := colorine.NewLogger(
     },
     // The default prefix color
     colorine.TextStyle{colorine.Green, colorine.None},
+    // format string of prefix
+    "%10s",
+
 )
 
 logger.Log("create", "path/to/file")
