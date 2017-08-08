@@ -21,7 +21,8 @@ import (
 // A Logger handles the printing stuff. You can create one with NewLogger().
 type Logger struct {
 	// Prefix string to TextStyle mapping.
-	Prefixes Prefixes
+	Prefixes     Prefixes
+	PrefixFormat string
 }
 
 // A TextStyle represents the style that strings are displayed with. Consists
@@ -78,9 +79,19 @@ var (
 // prefixes, defaultStyle is used.
 //
 // By default, no prefix is registered to any text style.
-func NewLogger(prefixes Prefixes, defaultStyle TextStyle) *Logger {
+func NewLogger(prefixes Prefixes, defaultStyle TextStyle, prefixFormat string) *Logger {
 	prefixes[""] = defaultStyle
-	return &Logger{prefixes}
+	return &Logger{
+		Prefixes:     prefixes,
+		PrefixFormat: prefixFormat,
+	}
+}
+
+func (logger *Logger) prefixFormat() string {
+	if logger.PrefixFormat == "" {
+		return "%10s"
+	}
+	return logger.PrefixFormat
 }
 
 // Log prints messages to console. prefix is colored using the logger.prefixes
@@ -101,7 +112,7 @@ func (logger *Logger) Log(prefix, message string) {
 		textStyle.Background.Bright,
 	)
 
-	fmt.Printf("%10s", prefix)
+	fmt.Printf(logger.prefixFormat(), prefix)
 
 	ct.ResetColor()
 
